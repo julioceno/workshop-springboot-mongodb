@@ -1,6 +1,7 @@
 package com.julioceno.workshopspringbootmongodb.resources;
 
 import com.julioceno.workshopspringbootmongodb.domain.User;
+import com.julioceno.workshopspringbootmongodb.dto.UserDTO;
 import com.julioceno.workshopspringbootmongodb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value="/users")
@@ -19,8 +21,12 @@ public class UserResource {
     UserService userService;
 
     @RequestMapping(method= RequestMethod.GET)
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<List<UserDTO>> findAll() {
         List<User> list = userService.findAll();
-        return ResponseEntity.ok().body(list);
+        List<UserDTO> listDTO = list.stream()
+                .map(item -> new UserDTO(item))
+                .collect(Collectors.toList());
+        
+        return ResponseEntity.ok().body(listDTO);
     }
 }
