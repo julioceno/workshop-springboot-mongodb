@@ -3,6 +3,7 @@ package com.julioceno.workshopspringbootmongodb.resources;
 import com.julioceno.workshopspringbootmongodb.domain.User;
 import com.julioceno.workshopspringbootmongodb.dto.UserDTO;
 import com.julioceno.workshopspringbootmongodb.services.UserService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +53,11 @@ public class UserResource {
         return ResponseEntity
                 .created(uri)
                 .body(userDto);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        userService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
